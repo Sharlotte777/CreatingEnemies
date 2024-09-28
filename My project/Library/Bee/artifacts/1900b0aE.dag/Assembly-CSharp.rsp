@@ -354,6 +354,8 @@
 -analyzer:"D:/Games/unity/2022.3.33f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
 "Assets/Scripts/Enemy.cs"
 "Assets/Scripts/EnemySpawner.cs"
+"Assets/Scripts/MoverToPoints.cs"
+"Assets/Scripts/SpawnPoint.cs"
 -langversion:9.0
 /deterministic
 /optimize+

@@ -2,37 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemySpawner : MonoBehaviour
+public class Spawner : MonoBehaviour
 {
-    [SerializeField] private float _spawnTime = 1f;
-    [SerializeField] private List<Transform> _spawnPoints = new();
-    [SerializeField] private Enemy _enemy;
+    [SerializeField][Range(1, 10)] private float _timeToSpawn = 1f;
+    [SerializeField] private List<SpawnPoint> _spawnPoints;
 
     private void Start()
     {
         StartCoroutine(Spawn());
     }
 
+    private SpawnPoint TakeRandomPoint()
+    {
+        return _spawnPoints[Random.Range(0, _spawnPoints.Count)];
+    }
+
     private IEnumerator Spawn()
     {
-        WaitForSeconds secondsUntilSpawn = new(_spawnTime);
+        WaitForSeconds waitSpawn = new(_timeToSpawn);
 
         while (true)
         {
-            yield return secondsUntilSpawn;
+            yield return waitSpawn;
 
-            Enemy enemy = Instantiate(_enemy, GetRandomPoint().position, Quaternion.identity);
-            enemy.Init(GetRandomDirection());
+            SpawnPoint point = TakeRandomPoint();
+
+            Enemy enemy = Instantiate(point.GetEnemy(), point.transform.position, Quaternion.identity);
+            enemy.SetTarget(point.GetEnemyTarget());
         }
-    }
-
-    private Vector3 GetRandomDirection()
-    {
-        return new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)).normalized;
-    }
-
-    private Transform GetRandomPoint()
-    {
-        return _spawnPoints[Random.Range(0, _spawnPoints.Count)];
     }
 }

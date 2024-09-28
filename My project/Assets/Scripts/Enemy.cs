@@ -1,24 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField][Range(1, 25)] private float _speed;
-    private Vector3 _direction;
+    [SerializeField][Range(1, 15)] private int _speed;
+    private Transform _target;
+
+    public void SetTarget(Transform target)
+    {
+        _target = target;
+    }
 
     private void Update()
     {
         Move();
     }
 
-    public void Init(Vector3 direction)
-    {
-        _direction = direction;
-    }
-
     private void Move()
     {
-        transform.Translate(_direction * (_speed * Time.deltaTime));
+        transform.position = Vector3.MoveTowards(transform.position, _target.position, _speed * Time.deltaTime);
     }
 }
